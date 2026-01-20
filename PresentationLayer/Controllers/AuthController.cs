@@ -3,6 +3,7 @@ using BussinessLogicLayer.DTOs.AppUser;
 using DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -169,6 +170,9 @@ namespace RecyclingSystem.Controllers
         {
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(token))
                 return BadRequest("Email and token are required.");
+
+            // ✅ Decode التوكن القادم من الرابط
+            token = WebUtility.UrlDecode(token);
 
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
